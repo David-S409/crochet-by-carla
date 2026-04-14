@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Contact" description="Get in touch with handcrochetedbycarlaarias.">
+  <section class="max-w-2xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-brown uppercase tracking-widest text-sm mb-3">Say hello</p>
+      <h1 class="text-4xl font-bold mb-4">Contact</h1>
+      <p class="text-brown/70">Questions, collaborations, or just want to chat about crochet? I'd love to hear from you.</p>
+    </div>
+
+    <!-- Contact form (Netlify Forms) -->
+    <form name="contact" method="POST" data-netlify="true" class="space-y-6">
+      <input type="hidden" name="form-name" value="contact" />
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block text-sm font-semibold mb-1">Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-semibold mb-1">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="message" class="block text-sm font-semibold mb-1">Message</label>
+        <textarea
+          id="message"
+          name="message"
+          rows="5"
+          required
+          class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40 resize-none"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-brown text-cream py-4 rounded-full text-lg font-semibold hover:bg-brown-dark transition-colors tracking-wide"
+      >
+        Send Message
+      </button>
+    </form>
+
+    <!-- Social -->
+    <div class="mt-12 text-center">
+      <p class="text-brown/60 text-sm mb-4">Or find me on Instagram</p>
+      <a
+        href="https://www.instagram.com/handcrochetedbycarlaarias"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 text-brown hover:text-brown-dark transition-colors font-semibold"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        @handcrochetedbycarlaarias
+      </a>
+    </div>
+  </section>
+</Layout>

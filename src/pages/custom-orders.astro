@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Custom Orders" description="Request a custom handmade crochet piece from Carla.">
+  <section class="max-w-3xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-brown uppercase tracking-widest text-sm mb-3">Made to order</p>
+      <h1 class="text-4xl font-bold mb-4">Custom Orders</h1>
+      <p class="text-brown/70 text-lg">
+        Have something specific in mind? I'd love to make it for you. Fill out the form below and I'll be in touch.
+      </p>
+    </div>
+
+    <!-- How it works -->
+    <div class="grid sm:grid-cols-3 gap-6 mb-14">
+      <div class="text-center p-6 bg-blush/20 rounded-2xl">
+        <div class="text-3xl mb-3">1</div>
+        <h3 class="font-bold mb-1">Submit a request</h3>
+        <p class="text-sm text-brown/70">Tell me what you have in mind — size, color, style.</p>
+      </div>
+      <div class="text-center p-6 bg-sage/20 rounded-2xl">
+        <div class="text-3xl mb-3">2</div>
+        <h3 class="font-bold mb-1">We chat details</h3>
+        <p class="text-sm text-brown/70">I'll reach out to confirm the design and get a timeline.</p>
+      </div>
+      <div class="text-center p-6 bg-brown-light/20 rounded-2xl">
+        <div class="text-3xl mb-3">3</div>
+        <h3 class="font-bold mb-1">Made just for you</h3>
+        <p class="text-sm text-brown/70">Your piece is handcrafted and shipped with care.</p>
+      </div>
+    </div>
+
+    <!-- Order form (Netlify Forms) -->
+    <form name="custom-order" method="POST" data-netlify="true" class="space-y-6">
+      <input type="hidden" name="form-name" value="custom-order" />
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block text-sm font-semibold mb-1">Your Name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+          />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-semibold mb-1">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="item" class="block text-sm font-semibold mb-1">What would you like made?</label>
+        <input
+          id="item"
+          name="item"
+          type="text"
+          placeholder="e.g. baby blanket, tote bag, stuffed animal…"
+          required
+          class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+        />
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div>
+          <label for="colors" class="block text-sm font-semibold mb-1">Color preferences</label>
+          <input
+            id="colors"
+            name="colors"
+            type="text"
+            placeholder="e.g. sage green, earthy tones…"
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+          />
+        </div>
+        <div>
+          <label for="timeline" class="block text-sm font-semibold mb-1">Do you have a deadline?</label>
+          <input
+            id="timeline"
+            name="timeline"
+            type="text"
+            placeholder="e.g. end of June, no rush…"
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="details" class="block text-sm font-semibold mb-1">Any other details?</label>
+        <textarea
+          id="details"
+          name="details"
+          rows="4"
+          placeholder="Size, who it's for, inspiration images, anything else…"
+          class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40 resize-none"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-brown text-cream py-4 rounded-full text-lg font-semibold hover:bg-brown-dark transition-colors tracking-wide"
+      >
+        Send My Request
+      </button>
+    </form>
+  </section>
+</Layout>

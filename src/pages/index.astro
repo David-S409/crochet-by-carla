@@ -1,0 +1,67 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Home">
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <p class="text-brown uppercase tracking-widest text-sm mb-4">Handmade with love</p>
+    <h1 class="text-5xl sm:text-6xl font-bold leading-tight mb-6">
+      Crochet pieces<br />made just for you
+    </h1>
+    <p class="text-brown/70 text-lg max-w-xl mx-auto mb-10">
+      Every stitch is crafted by hand. Browse the gallery or reach out to start your custom order.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/gallery" class="bg-brown text-cream px-8 py-3 rounded-full hover:bg-brown-dark transition-colors tracking-wide">
+        View Gallery
+      </a>
+      <a href="/custom-orders" class="border border-brown text-brown px-8 py-3 rounded-full hover:bg-brown/10 transition-colors tracking-wide">
+        Custom Orders
+      </a>
+    </div>
+  </section>
+
+  <!-- Featured pieces -->
+  <section class="max-w-5xl mx-auto px-6 pb-20">
+    <h2 class="text-2xl font-bold mb-8 text-center">Featured Pieces</h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <div class="aspect-square bg-blush/40 rounded-2xl overflow-hidden">
+        <img src="/images/IMG_3984.jpg" alt="Crochet piece" class="w-full h-full object-cover" />
+      </div>
+      <div class="aspect-square bg-sage/30 rounded-2xl overflow-hidden">
+        <img src="/images/IMG_3985.jpg" alt="Crochet piece" class="w-full h-full object-cover" />
+      </div>
+      <div class="aspect-square bg-brown-light/30 rounded-2xl overflow-hidden">
+        <img src="/images/IMG_7812.jpg" alt="Crochet piece" class="w-full h-full object-cover" />
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <a href="/gallery" class="text-brown underline underline-offset-4 hover:text-brown-dark transition-colors">
+        See all pieces →
+      </a>
+    </div>
+  </section>
+
+  <!-- Instagram CTA -->
+  <section class="bg-blush/20 py-16">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <p class="text-sm uppercase tracking-widest text-brown mb-3">Follow along</p>
+      <h2 class="text-3xl font-bold mb-4">See more on Instagram</h2>
+      <p class="text-brown/70 mb-6">Behind the scenes, new pieces, and more.</p>
+      <a
+        href="https://www.instagram.com/handcrochetedbycarlaarias"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 bg-brown text-cream px-7 py-3 rounded-full hover:bg-brown-dark transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        @handcrochetedbycarlaarias
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const pieces = [
+  { src: '/images/IMG_3984.jpg', alt: 'Crochet piece' },
+  { src: '/images/IMG_3985.jpg', alt: 'Crochet piece' },
+  { src: '/images/IMG_7812.jpg', alt: 'Crochet piece' },
+  { src: '/images/IMG_8268.jpg', alt: 'Crochet piece' },
+  { src: '/images/IMG_8393.jpg', alt: 'Crochet piece' },
+];
+---
+
+<Layout title="Gallery" description="Browse handmade crochet pieces by Carla.">
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <div class="text-center mb-12">
+      <p class="text-brown uppercase tracking-widest text-sm mb-3">The work</p>
+      <h1 class="text-4xl font-bold">Gallery</h1>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      {pieces.map((piece) => (
+        <button
+          class="aspect-square rounded-2xl overflow-hidden bg-blush/30 hover:scale-[1.02] transition-transform duration-300 cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-brown/50"
+          data-lightbox={piece.src}
+          aria-label="View larger"
+        >
+          <img
+            src={piece.src}
+            alt={piece.alt}
+            class="w-full h-full object-cover pointer-events-none"
+            loading="lazy"
+          />
+        </button>
+      ))}
+    </div>
+
+    <div class="text-center mt-12">
+      <p class="text-brown/70 mb-4">See something you love or want something made just for you?</p>
+      <a href="/custom-orders" class="bg-brown text-cream px-8 py-3 rounded-full hover:bg-brown-dark transition-colors">
+        Request a Custom Order
+      </a>
+    </div>
+  </section>
+
+  <!-- Lightbox -->
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image viewer"
+  >
+    <button
+      id="lightbox-close"
+      class="absolute top-5 right-6 text-white/70 hover:text-white text-4xl leading-none"
+      aria-label="Close"
+    >&times;</button>
+    <img
+      id="lightbox-img"
+      src=""
+      alt=""
+      class="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
+    />
+  </div>
+</Layout>
+
+<script>
+  const lightbox = document.getElementById('lightbox')!;
+  const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+  const closeBtn = document.getElementById('lightbox-close')!;
+
+  function openLightbox(src: string) {
+    lightboxImg.src = src;
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add('hidden');
+    lightbox.classList.remove('flex');
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((btn) => {
+    btn.addEventListener('click', () => openLightbox(btn.dataset.lightbox!));
+  });
+
+  closeBtn.addEventListener('click', closeLightbox);
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
