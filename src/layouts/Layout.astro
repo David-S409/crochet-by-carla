@@ -4,9 +4,18 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
-const { title, description = 'Handmade crochet pieces by Carla. Custom orders welcome.' } = Astro.props;
+const {
+  title,
+  description = 'Handmade crochet pieces by Carla. Custom orders welcome.',
+  image = '/images/IMG_3984.jpg',
+} = Astro.props;
+
+const siteUrl = 'https://handcrochetedbycarlaarias.netlify.app';
+const pageTitle = `${title} | HandCrochetedByCarlaArias`;
+const ogImage = `${siteUrl}${image}`;
 ---
 
 <!doctype html>
@@ -15,34 +24,74 @@ const { title, description = 'Handmade crochet pieces by Carla. Custom orders we
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <title>{title} | HandCrochetedByCarlaArias</title>
+    <title>{pageTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph / social share -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content="HandCrochetedByCarlaArias — handmade crochet pieces" />
+
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
   </head>
   <body class="bg-cream text-brown-dark font-serif">
-    <header class="sticky top-0 z-50 bg-cream/90 backdrop-blur border-b border-brown-light/30">
-      <nav class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/" class="text-xl font-bold tracking-wide text-brown-dark hover:text-brown transition-colors">
+    <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-brown-light/30">
+      <nav class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+        <a href="/" class="text-lg font-bold tracking-wide text-brown-dark hover:text-brown transition-colors">
           HandCrochetedByCarlaArias
         </a>
-        <ul class="flex gap-6 text-sm tracking-wider uppercase">
+
+        <!-- Desktop nav -->
+        <ul class="hidden sm:flex gap-6 text-sm tracking-wider uppercase">
           <li><a href="/" class="hover:text-brown transition-colors">Home</a></li>
           <li><a href="/gallery" class="hover:text-brown transition-colors">Gallery</a></li>
           <li><a href="/custom-orders" class="hover:text-brown transition-colors">Custom Orders</a></li>
           <li><a href="/about" class="hover:text-brown transition-colors">About</a></li>
           <li><a href="/contact" class="hover:text-brown transition-colors">Contact</a></li>
         </ul>
+
+        <!-- Hamburger button -->
+        <button
+          id="menu-btn"
+          class="sm:hidden flex flex-col gap-1.5 p-2 -mr-2"
+          aria-label="Open menu"
+          aria-expanded="false"
+        >
+          <span class="block w-6 h-0.5 bg-brown-dark transition-all duration-300" id="bar1"></span>
+          <span class="block w-6 h-0.5 bg-brown-dark transition-all duration-300" id="bar2"></span>
+          <span class="block w-6 h-0.5 bg-brown-dark transition-all duration-300" id="bar3"></span>
+        </button>
       </nav>
+
+      <!-- Mobile menu -->
+      <div
+        id="mobile-menu"
+        class="sm:hidden hidden border-t border-brown-light/30 bg-cream/98"
+      >
+        <ul class="flex flex-col px-5 py-4 gap-4 text-sm tracking-wider uppercase">
+          <li><a href="/" class="block hover:text-brown transition-colors">Home</a></li>
+          <li><a href="/gallery" class="block hover:text-brown transition-colors">Gallery</a></li>
+          <li><a href="/custom-orders" class="block hover:text-brown transition-colors">Custom Orders</a></li>
+          <li><a href="/about" class="block hover:text-brown transition-colors">About</a></li>
+          <li><a href="/contact" class="block hover:text-brown transition-colors">Contact</a></li>
+        </ul>
+      </div>
     </header>
 
     <main>
       <slot />
     </main>
 
-    <footer class="mt-20 border-t border-brown-light/30 bg-cream">
-      <div class="max-w-5xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-brown/70">
-        <p>&copy; {new Date().getFullYear()} HandCrochetedByCarlaArias. All rights reserved.</p>
+    <footer class="mt-16 border-t border-brown-light/30 bg-cream">
+      <div class="max-w-5xl mx-auto px-5 py-8 flex flex-col items-center gap-4 text-sm text-brown/70 text-center">
         <a
-          href="https://www.instagram.com/handcrochetedbycarlaarias"
+          href="https://www.instagram.com/HandCrochetedByCarlaArias"
           target="_blank"
           rel="noopener noreferrer"
           class="flex items-center gap-2 hover:text-brown transition-colors"
@@ -54,7 +103,41 @@ const { title, description = 'Handmade crochet pieces by Carla. Custom orders we
           </svg>
           @HandCrochetedByCarlaArias
         </a>
+        <p>&copy; {new Date().getFullYear()} HandCrochetedByCarlaArias. All rights reserved.</p>
       </div>
     </footer>
+
+    <script>
+      const btn = document.getElementById('menu-btn')!;
+      const menu = document.getElementById('mobile-menu')!;
+      const bar1 = document.getElementById('bar1')!;
+      const bar2 = document.getElementById('bar2')!;
+      const bar3 = document.getElementById('bar3')!;
+
+      btn.addEventListener('click', () => {
+        const open = menu.classList.toggle('hidden');
+        btn.setAttribute('aria-expanded', String(!open));
+        // Animate to X
+        if (!open) {
+          bar1.style.transform = 'translateY(8px) rotate(45deg)';
+          bar2.style.opacity = '0';
+          bar3.style.transform = 'translateY(-8px) rotate(-45deg)';
+        } else {
+          bar1.style.transform = '';
+          bar2.style.opacity = '';
+          bar3.style.transform = '';
+        }
+      });
+
+      // Close menu on nav link click
+      menu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          menu.classList.add('hidden');
+          bar1.style.transform = '';
+          bar2.style.opacity = '';
+          bar3.style.transform = '';
+        });
+      });
+    </script>
   </body>
 </html>
