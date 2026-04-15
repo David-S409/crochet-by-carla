@@ -43,6 +43,12 @@ const ogImage = `${siteUrl}${image}`;
     <!-- Netlify Identity (required for CMS login redirect) -->
     <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script is:inline>
+      // Redirect invite/recovery tokens to the admin page so the CMS handles them
+      var hash = window.location.hash;
+      if (hash.includes('invite_token') || hash.includes('recovery_token') || hash.includes('confirmation_token')) {
+        window.location.replace('/admin/' + hash);
+      }
+
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on('init', function(user) {
           if (!user) {
@@ -51,12 +57,6 @@ const ogImage = `${siteUrl}${image}`;
             });
           }
         });
-
-        // Explicitly open the widget when an invite/recovery token is in the URL
-        var params = new URLSearchParams(window.location.hash.replace('#', '?'));
-        if (params.get('invite_token') || params.get('recovery_token') || params.get('confirmation_token')) {
-          window.netlifyIdentity.open();
-        }
       }
     </script>
   </head>
