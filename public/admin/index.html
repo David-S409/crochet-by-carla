@@ -2,10 +2,68 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Gallery Admin | HandCrochetedByCarlaArias</title>
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <style>
+      /* Make the CMS usable on mobile */
+
+      /* Stack the sidebar and editor vertically on small screens */
+      @media (max-width: 768px) {
+        /* App container */
+        [class*="App-container"] {
+          flex-direction: column !important;
+        }
+
+        /* Sidebar takes full width */
+        [class*="Sidebar"],
+        [class*="sidebar"] {
+          width: 100% !important;
+          min-width: unset !important;
+          max-width: unset !important;
+          height: auto !important;
+        }
+
+        /* Editor pane fills screen */
+        [class*="EditorContainer"],
+        [class*="editor-container"] {
+          width: 100% !important;
+          min-width: unset !important;
+        }
+
+        /* Collection list items — easier to tap */
+        [class*="EntryCard"],
+        [class*="entry-card"] {
+          min-height: 64px !important;
+        }
+
+        /* Toolbar buttons */
+        [class*="ToolbarButton"],
+        [class*="toolbar-button"],
+        button {
+          min-height: 44px !important;
+          min-width: 44px !important;
+        }
+
+        /* Media library grid — 2 columns on mobile */
+        [class*="MediaLibrary"] [class*="Grid"],
+        [class*="media-library"] [class*="grid"] {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+
+        /* Prevent horizontal overflow */
+        body, #nc-root {
+          overflow-x: hidden !important;
+        }
+
+        /* Image preview in media library */
+        [class*="MediaCard"],
+        [class*="media-card"] {
+          width: 100% !important;
+        }
+      }
+    </style>
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
