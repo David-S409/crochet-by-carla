@@ -1,5 +1,0 @@
----
-title: Crochet piece 2
-photo: /images/IMG_3985.jpg
-alt: Handmade crochet piece
----

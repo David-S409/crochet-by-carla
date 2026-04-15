@@ -1,0 +1,29 @@
+{
+  "$ref": "#/definitions/gallery",
+  "definitions": {
+    "gallery": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "photo": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string",
+          "default": "Handmade crochet piece"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "photo"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

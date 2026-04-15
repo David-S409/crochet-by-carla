@@ -1,71 +1,395 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <title>Gallery Admin | HandCrochetedByCarlaArias</title>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <style>
-      /* Make the CMS usable on mobile */
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      /* Stack the sidebar and editor vertically on small screens */
-      @media (max-width: 768px) {
-        /* App container */
-        [class*="App-container"] {
-          flex-direction: column !important;
-        }
+      body {
+        font-family: Georgia, serif;
+        background: #fdf6ee;
+        color: #4a2f1a;
+        min-height: 100vh;
+        padding: 24px 16px 48px;
+      }
 
-        /* Sidebar takes full width */
-        [class*="Sidebar"],
-        [class*="sidebar"] {
-          width: 100% !important;
-          min-width: unset !important;
-          max-width: unset !important;
-          height: auto !important;
-        }
+      h1 {
+        font-size: 1.5rem;
+        text-align: center;
+        margin-bottom: 6px;
+      }
 
-        /* Editor pane fills screen */
-        [class*="EditorContainer"],
-        [class*="editor-container"] {
-          width: 100% !important;
-          min-width: unset !important;
-        }
+      .subtitle {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #8b5e3c;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 32px;
+      }
 
-        /* Collection list items — easier to tap */
-        [class*="EntryCard"],
-        [class*="entry-card"] {
-          min-height: 64px !important;
-        }
+      .card {
+        background: white;
+        border-radius: 20px;
+        padding: 28px 24px;
+        max-width: 480px;
+        margin: 0 auto 24px;
+        box-shadow: 0 2px 16px rgba(139,94,60,0.08);
+      }
 
-        /* Toolbar buttons */
-        [class*="ToolbarButton"],
-        [class*="toolbar-button"],
-        button {
-          min-height: 44px !important;
-          min-width: 44px !important;
-        }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: bold;
+        margin-bottom: 6px;
+      }
 
-        /* Media library grid — 2 columns on mobile */
-        [class*="MediaLibrary"] [class*="Grid"],
-        [class*="media-library"] [class*="grid"] {
-          grid-template-columns: repeat(2, 1fr) !important;
-        }
+      input[type="password"],
+      input[type="text"] {
+        width: 100%;
+        border: 1.5px solid #c9a87c88;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-size: 1rem;
+        font-family: inherit;
+        background: #fdf6ee;
+        color: #4a2f1a;
+        outline: none;
+      }
 
-        /* Prevent horizontal overflow */
-        body, #nc-root {
-          overflow-x: hidden !important;
-        }
+      input:focus { border-color: #8b5e3c; }
 
-        /* Image preview in media library */
-        [class*="MediaCard"],
-        [class*="media-card"] {
-          width: 100% !important;
-        }
+      .btn {
+        display: block;
+        width: 100%;
+        background: #8b5e3c;
+        color: #fdf6ee;
+        border: none;
+        border-radius: 999px;
+        padding: 14px;
+        font-size: 1rem;
+        font-family: inherit;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: background 0.2s;
+      }
+
+      .btn:hover { background: #4a2f1a; }
+      .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+      .btn-danger {
+        background: #c0392b;
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        width: auto;
+        margin: 0;
+        border-radius: 999px;
+      }
+
+      .btn-danger:hover { background: #922b21; }
+
+      .drop-zone {
+        border: 2px dashed #c9a87c;
+        border-radius: 16px;
+        padding: 36px 16px;
+        text-align: center;
+        color: #8b5e3c;
+        cursor: pointer;
+        transition: background 0.2s, border-color 0.2s;
+        font-size: 0.9rem;
+        line-height: 1.8;
+      }
+
+      .drop-zone:hover,
+      .drop-zone.dragover { background: #f2c4b01a; border-color: #8b5e3c; }
+
+      .drop-zone input { display: none; }
+
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .photo-item {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f2c4b040;
+      }
+
+      .photo-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .photo-item .delete-btn {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        border: none;
+        border-radius: 999px;
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .photo-item .delete-btn:hover { background: #c0392b; }
+
+      .progress-bar {
+        height: 6px;
+        background: #f2c4b0;
+        border-radius: 999px;
+        margin-top: 12px;
+        overflow: hidden;
+        display: none;
+      }
+
+      .progress-fill {
+        height: 100%;
+        background: #8b5e3c;
+        border-radius: 999px;
+        width: 0%;
+        transition: width 0.3s;
+      }
+
+      .message {
+        text-align: center;
+        font-size: 0.85rem;
+        margin-top: 10px;
+        min-height: 20px;
+        color: #8b5e3c;
+      }
+
+      .message.error { color: #c0392b; }
+
+      #login-section { display: block; }
+      #upload-section { display: none; }
+
+      .logout-link {
+        display: block;
+        text-align: center;
+        margin-top: 8px;
+        font-size: 0.8rem;
+        color: #8b5e3c88;
+        cursor: pointer;
+        text-decoration: underline;
       }
     </style>
   </head>
   <body>
-    <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+    <h1>Gallery Admin</h1>
+    <p class="subtitle">HandCrochetedByCarlaArias</p>
+
+    <!-- Login -->
+    <div class="card" id="login-section">
+      <label for="password">Password</label>
+      <input type="password" id="password" autocomplete="current-password" />
+      <button class="btn" id="login-btn">Sign In</button>
+      <p class="message" id="login-msg"></p>
+    </div>
+
+    <!-- Upload -->
+    <div id="upload-section">
+      <div class="card">
+        <label>Add a photo</label>
+        <div class="drop-zone" id="drop-zone">
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple />
+          📷 Tap to choose photos<br />
+          <span style="font-size:0.75rem;color:#8b5e3c99">JPG, PNG, or WEBP</span>
+        </div>
+        <div class="progress-bar" id="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="message" id="upload-msg"></p>
+      </div>
+
+      <div class="card">
+        <label>Current photos</label>
+        <div class="photo-grid" id="photo-grid">
+          <p style="grid-column:span 2;text-align:center;color:#8b5e3c88;font-size:0.85rem;padding:16px 0">Loading...</p>
+        </div>
+      </div>
+
+      <span class="logout-link" id="logout-link">Sign out</span>
+    </div>
+
+    <script>
+      let password = sessionStorage.getItem('admin_password') || '';
+
+      const loginSection = document.getElementById('login-section');
+      const uploadSection = document.getElementById('upload-section');
+      const passwordInput = document.getElementById('password');
+      const loginBtn = document.getElementById('login-btn');
+      const loginMsg = document.getElementById('login-msg');
+      const dropZone = document.getElementById('drop-zone');
+      const fileInput = document.getElementById('file-input');
+      const progressBar = document.getElementById('progress-bar');
+      const progressFill = document.getElementById('progress-fill');
+      const uploadMsg = document.getElementById('upload-msg');
+      const photoGrid = document.getElementById('photo-grid');
+      const logoutLink = document.getElementById('logout-link');
+
+      function showUpload() {
+        loginSection.style.display = 'none';
+        uploadSection.style.display = 'block';
+        loadPhotos();
+      }
+
+      if (password) showUpload();
+
+      loginBtn.addEventListener('click', async () => {
+        const val = passwordInput.value.trim();
+        if (!val) return;
+
+        // Verify by attempting a dummy upload check
+        loginMsg.textContent = 'Checking...';
+        loginMsg.className = 'message';
+        loginBtn.disabled = true;
+
+        const fd = new FormData();
+        fd.append('password', val);
+        // Send with no file to get a password-specific error vs auth error
+        const res = await fetch('/.netlify/functions/upload-image', { method: 'POST', body: fd });
+
+        loginBtn.disabled = false;
+
+        if (res.status === 400) {
+          // 400 = authenticated but no file — password is correct
+          password = val;
+          sessionStorage.setItem('admin_password', val);
+          showUpload();
+        } else if (res.status === 401) {
+          loginMsg.textContent = 'Incorrect password.';
+          loginMsg.className = 'message error';
+        } else {
+          loginMsg.textContent = 'Something went wrong. Try again.';
+          loginMsg.className = 'message error';
+        }
+      });
+
+      passwordInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') loginBtn.click();
+      });
+
+      logoutLink.addEventListener('click', () => {
+        password = '';
+        sessionStorage.removeItem('admin_password');
+        loginSection.style.display = 'block';
+        uploadSection.style.display = 'none';
+        passwordInput.value = '';
+      });
+
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        uploadFiles(e.dataTransfer.files);
+      });
+      fileInput.addEventListener('change', () => uploadFiles(fileInput.files));
+
+      async function uploadFiles(files) {
+        if (!files || !files.length) return;
+
+        progressBar.style.display = 'block';
+        uploadMsg.textContent = '';
+        uploadMsg.className = 'message';
+
+        let done = 0;
+        for (const file of files) {
+          const fd = new FormData();
+          fd.append('password', password);
+          fd.append('file', file);
+
+          try {
+            const res = await fetch('/.netlify/functions/upload-image', { method: 'POST', body: fd });
+            const data = await res.json();
+
+            if (!res.ok) {
+              uploadMsg.textContent = data.error || 'Upload failed.';
+              uploadMsg.className = 'message error';
+            }
+          } catch {
+            uploadMsg.textContent = 'Upload failed. Check your connection.';
+            uploadMsg.className = 'message error';
+          }
+
+          done++;
+          progressFill.style.width = `${(done / files.length) * 100}%`;
+        }
+
+        uploadMsg.textContent = `${done} photo${done > 1 ? 's' : ''} uploaded!`;
+        progressFill.style.width = '100%';
+        fileInput.value = '';
+
+        setTimeout(() => {
+          progressBar.style.display = 'none';
+          progressFill.style.width = '0%';
+        }, 1500);
+
+        loadPhotos();
+      }
+
+      async function loadPhotos() {
+        photoGrid.innerHTML = '<p style="grid-column:span 2;text-align:center;color:#8b5e3c88;font-size:0.85rem;padding:16px 0">Loading...</p>';
+
+        try {
+          const res = await fetch('/.netlify/functions/list-images');
+          const images = await res.json();
+
+          if (!images.length) {
+            photoGrid.innerHTML = '<p style="grid-column:span 2;text-align:center;color:#8b5e3c88;font-size:0.85rem;padding:16px 0">No photos yet.</p>';
+            return;
+          }
+
+          photoGrid.innerHTML = '';
+          for (const { key, src } of images) {
+            const item = document.createElement('div');
+            item.className = 'photo-item';
+
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = '';
+            img.loading = 'lazy';
+
+            const del = document.createElement('button');
+            del.className = 'delete-btn';
+            del.title = 'Delete';
+            del.textContent = '×';
+            del.addEventListener('click', async () => {
+              if (!confirm('Delete this photo?')) return;
+              await fetch('/.netlify/functions/delete-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password, key }),
+              });
+              item.remove();
+            });
+
+            item.appendChild(img);
+            item.appendChild(del);
+            photoGrid.appendChild(item);
+          }
+        } catch {
+          photoGrid.innerHTML = '<p style="grid-column:span 2;text-align:center;color:#c0392b;font-size:0.85rem;">Could not load photos.</p>';
+        }
+      }
+    </script>
   </body>
 </html>

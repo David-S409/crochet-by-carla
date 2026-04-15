@@ -40,25 +40,6 @@ const ogImage = `${siteUrl}${image}`;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Netlify Identity (required for CMS login redirect) -->
-    <script is:inline src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script is:inline>
-      // Redirect invite/recovery tokens to the admin page so the CMS handles them
-      var hash = window.location.hash;
-      if (hash.includes('invite_token') || hash.includes('recovery_token') || hash.includes('confirmation_token')) {
-        window.location.replace('/admin/' + hash);
-      }
-
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', function(user) {
-          if (!user) {
-            window.netlifyIdentity.on('login', function() {
-              document.location.href = '/admin/';
-            });
-          }
-        });
-      }
-    </script>
   </head>
   <body class="bg-cream text-brown-dark font-serif">
     <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-brown-light/30">
