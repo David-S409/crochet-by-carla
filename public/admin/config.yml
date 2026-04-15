@@ -1,0 +1,18 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: public/images
+public_folder: /images
+
+collections:
+  - name: gallery
+    label: Gallery
+    label_singular: Photo
+    folder: src/content/gallery
+    create: true
+    delete: true
+    fields:
+      - { label: Title, name: title, widget: string, hint: "A short description of the piece (e.g. Blue baby blanket)" }
+      - { label: Photo, name: photo, widget: image }
+      - { label: Alt text, name: alt, widget: string, default: "Handmade crochet piece", hint: "Describe the image for accessibility" }

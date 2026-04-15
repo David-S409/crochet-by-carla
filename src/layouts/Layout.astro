@@ -39,6 +39,9 @@ const ogImage = `${siteUrl}${image}`;
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    <!-- Netlify Identity (required for CMS login redirect) -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body class="bg-cream text-brown-dark font-serif">
     <header class="sticky top-0 z-50 bg-cream/95 backdrop-blur border-b border-brown-light/30">

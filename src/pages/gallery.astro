@@ -1,13 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
-const pieces = [
-  { src: '/images/IMG_3984.jpg', alt: 'Crochet piece' },
-  { src: '/images/IMG_3985.jpg', alt: 'Crochet piece' },
-  { src: '/images/IMG_7812.jpg', alt: 'Crochet piece' },
-  { src: '/images/IMG_8268.jpg', alt: 'Crochet piece' },
-  { src: '/images/IMG_8393.jpg', alt: 'Crochet piece' },
-];
+const entries = await getCollection('gallery');
+const pieces = entries.map(e => ({ src: e.data.photo, alt: e.data.alt }));
 ---
 
 <Layout title="Gallery" description="Browse handmade crochet pieces by Carla.">
