@@ -51,6 +51,12 @@ const ogImage = `${siteUrl}${image}`;
             });
           }
         });
+
+        // Explicitly open the widget when an invite/recovery token is in the URL
+        var params = new URLSearchParams(window.location.hash.replace('#', '?'));
+        if (params.get('invite_token') || params.get('recovery_token') || params.get('confirmation_token')) {
+          window.netlifyIdentity.open();
+        }
       }
     </script>
   </head>
