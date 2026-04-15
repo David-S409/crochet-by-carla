@@ -2,7 +2,7 @@ import { getStore } from "@netlify/blobs";
 
 export default async (_req: Request) => {
   try {
-    const store = getStore("gallery");
+    const store = getStore({ name: "gallery", consistency: "strong" });
     const { blobs } = await store.list();
 
     const images = blobs.map(({ key }) => ({

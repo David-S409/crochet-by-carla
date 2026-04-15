@@ -74,9 +74,17 @@ import Layout from '../layouts/Layout.astro';
 
     try {
       const res = await fetch('/.netlify/functions/list-images');
-      const images: { key: string; src: string }[] = await res.json();
+      const json = await res.json();
 
       loading.remove();
+
+      if (!res.ok || !Array.isArray(json)) {
+        grid.innerHTML = `<p class="col-span-2 sm:col-span-3 text-center text-brown/40 py-20 text-sm">Could not load photos.</p>`;
+        console.error('list-images error:', json);
+        return;
+      }
+
+      const images: { key: string; src: string }[] = json;
 
       if (!images.length) {
         grid.innerHTML = '<p class="col-span-2 sm:col-span-3 text-center text-brown/40 py-20 text-sm">No photos yet — check back soon!</p>';

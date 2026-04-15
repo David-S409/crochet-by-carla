@@ -7,7 +7,7 @@ export default async (req: Request) => {
   if (!key) return new Response("Missing key", { status: 400 });
 
   try {
-    const store = getStore("gallery");
+    const store = getStore({ name: "gallery", consistency: "strong" });
     const entry = await store.getWithMetadata(key, { type: "arrayBuffer" });
 
     if (!entry?.data) return new Response("Not found", { status: 404 });
