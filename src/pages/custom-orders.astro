@@ -104,6 +104,32 @@ import Layout from '../layouts/Layout.astro';
         ></textarea>
       </div>
 
+      <!-- Gift section -->
+      <div class="border border-brown-light/40 rounded-2xl p-5 bg-blush/10 space-y-4">
+        <div class="flex items-start gap-3">
+          <input
+            id="is-gift"
+            name="is_gift"
+            type="checkbox"
+            class="mt-1 w-4 h-4 accent-brown cursor-pointer"
+          />
+          <label for="is-gift" class="text-sm font-semibold cursor-pointer">
+            This is a gift 🎁
+            <span class="block font-normal text-brown/60 mt-0.5">All gifts are carefully wrapped with love.</span>
+          </label>
+        </div>
+        <div id="gift-note-field" class="hidden">
+          <label for="gift-note" class="block text-sm font-semibold mb-1">Gift note <span class="font-normal text-brown/50">(optional)</span></label>
+          <textarea
+            id="gift-note"
+            name="gift_note"
+            rows="3"
+            placeholder="e.g. Happy birthday! Wishing you all the best…"
+            class="w-full border border-brown-light/50 rounded-xl px-4 py-3 bg-white/60 focus:outline-none focus:ring-2 focus:ring-brown/40 resize-none text-sm"
+          ></textarea>
+        </div>
+      </div>
+
       <p class="text-xs text-brown/50 text-center leading-relaxed">
         ✦ Please note: since every piece is entirely handmade, minor variations or small imperfections
         may occur — this is part of the charm of handcrafted work and not considered a defect.
@@ -118,3 +144,12 @@ import Layout from '../layouts/Layout.astro';
     </form>
   </section>
 </Layout>
+
+<script>
+  const checkbox = document.getElementById('is-gift') as HTMLInputElement;
+  const noteField = document.getElementById('gift-note-field')!;
+
+  checkbox.addEventListener('change', () => {
+    noteField.classList.toggle('hidden', !checkbox.checked);
+  });
+</script>
