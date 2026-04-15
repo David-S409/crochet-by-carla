@@ -1,8 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { client, urlFor } from '../lib/sanity';
+import { toHTML } from '@portabletext/to-html';
+
+const settings = await client.fetch(`*[_type == "siteSettings"][0]`);
+const aboutHTML = settings?.aboutText ? toHTML(settings.aboutText) : null;
 ---
 
-<Layout title="About" description="Learn about Carla and the story behind handcrochetedbycarlaarias.">
+<Layout title="About" description="Learn about Carla and the story behind HandCrochetedByCarlaArias.">
   <section class="max-w-3xl mx-auto px-5 py-14">
     <div class="text-center mb-10">
       <p class="text-brown uppercase tracking-widest text-xs sm:text-sm mb-3">The maker</p>
@@ -12,23 +17,28 @@ import Layout from '../layouts/Layout.astro';
     <div class="flex flex-col sm:flex-row gap-8 items-start">
       <div class="w-full sm:w-56 flex-shrink-0">
         <div class="aspect-square rounded-3xl bg-blush/40 overflow-hidden max-w-[200px] mx-auto sm:max-w-none">
-          <!-- Replace with Carla's photo -->
-          <div class="w-full h-full flex items-center justify-center text-brown/30 text-sm">Photo coming soon</div>
+          {settings?.aboutImage ? (
+            <img
+              src={urlFor(settings.aboutImage).width(400).height(400).fit('crop').url()}
+              alt="Carla"
+              class="w-full h-full object-cover"
+            />
+          ) : (
+            <div class="w-full h-full flex items-center justify-center text-brown/30 text-sm">Photo coming soon</div>
+          )}
         </div>
       </div>
-      <div class="flex-1 space-y-4 text-brown/80 leading-relaxed text-base">
-        <p>
-          Hi, I'm Carla! I'm a self-taught crocheter who fell in love with the craft and never looked back.
-          What started as a hobby quickly turned into a passion for creating handmade pieces that people actually use and love.
-        </p>
-        <p>
-          Every item I make is crocheted by hand — no machines, no shortcuts. I put thought into every stitch,
-          every color choice, and every detail. Whether it's a cozy blanket, a playful amigurumi, or a tote bag you'll reach for every day,
-          I want it to feel special.
-        </p>
-        <p>
-          I take custom orders and love bringing people's ideas to life. If you have a vision, let's make it happen.
-        </p>
+
+      <div class="flex-1 text-brown/80 leading-relaxed text-base">
+        {aboutHTML ? (
+          <div class="prose prose-sm space-y-4" set:html={aboutHTML} />
+        ) : (
+          <div class="space-y-4">
+            <p>Hi, I'm Carla! I'm a self-taught crocheter who fell in love with the craft and never looked back. What started as a hobby quickly turned into a passion for creating handmade pieces that people actually use and love.</p>
+            <p>Every item I make is crocheted by hand — no machines, no shortcuts. I put thought into every stitch, every color choice, and every detail.</p>
+            <p>I take custom orders and love bringing people's ideas to life. If you have a vision, let's make it happen.</p>
+          </div>
+        )}
       </div>
     </div>
 

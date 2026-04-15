@@ -1,5 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { client, urlFor } from '../lib/sanity';
+
+const pieces = await client.fetch(
+  `*[_type == "galleryImage"] | order(order asc, _createdAt desc) { title, image, alt }`
+);
 ---
 
 <Layout title="Gallery" description="Browse handmade crochet pieces by Carla.">
@@ -9,11 +14,26 @@ import Layout from '../layouts/Layout.astro';
       <h1 class="text-3xl sm:text-4xl font-bold">Gallery</h1>
     </div>
 
-    <div id="gallery-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 min-h-48">
-      <div id="gallery-loading" class="col-span-2 sm:col-span-3 flex items-center justify-center py-20 text-brown/40 text-sm">
-        Loading...
+    {pieces.length === 0 ? (
+      <p class="text-center text-brown/40 py-20 text-sm">No photos yet — check back soon!</p>
+    ) : (
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+        {pieces.map((piece: any) => (
+          <button
+            class="aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-blush/30 hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300 cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-brown/50"
+            data-lightbox={urlFor(piece.image).width(1200).url()}
+            aria-label="View larger"
+          >
+            <img
+              src={urlFor(piece.image).width(600).height(600).fit('crop').url()}
+              alt={piece.alt || piece.title || 'Handmade crochet piece'}
+              class="w-full h-full object-cover pointer-events-none"
+              loading="lazy"
+            />
+          </button>
+        ))}
       </div>
-    </div>
+    )}
 
     <div class="text-center mt-10">
       <p class="text-brown/70 text-sm mb-4">See something you love or want something made just for you?</p>
@@ -31,17 +51,8 @@ import Layout from '../layouts/Layout.astro';
     aria-modal="true"
     aria-label="Image viewer"
   >
-    <button
-      id="lightbox-close"
-      class="absolute top-4 right-5 text-white/70 hover:text-white text-4xl leading-none"
-      aria-label="Close"
-    >&times;</button>
-    <img
-      id="lightbox-img"
-      src=""
-      alt=""
-      class="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
-    />
+    <button id="lightbox-close" class="absolute top-4 right-5 text-white/70 hover:text-white text-4xl leading-none" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl" />
   </div>
 </Layout>
 
@@ -56,7 +67,6 @@ import Layout from '../layouts/Layout.astro';
     lightbox.classList.add('flex');
     document.body.style.overflow = 'hidden';
   }
-
   function closeLightbox() {
     lightbox.classList.add('hidden');
     lightbox.classList.remove('flex');
@@ -68,48 +78,7 @@ import Layout from '../layouts/Layout.astro';
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
-  async function loadGallery() {
-    const grid = document.getElementById('gallery-grid')!;
-    const loading = document.getElementById('gallery-loading')!;
-
-    try {
-      const res = await fetch('/.netlify/functions/list-images');
-      const json = await res.json();
-
-      loading.remove();
-
-      if (!res.ok || !Array.isArray(json)) {
-        grid.innerHTML = `<p class="col-span-2 sm:col-span-3 text-center text-brown/40 py-20 text-sm">Could not load photos.</p>`;
-        console.error('list-images error:', json);
-        return;
-      }
-
-      const images: { key: string; src: string }[] = json;
-
-      if (!images.length) {
-        grid.innerHTML = '<p class="col-span-2 sm:col-span-3 text-center text-brown/40 py-20 text-sm">No photos yet — check back soon!</p>';
-        return;
-      }
-
-      for (const { src } of images) {
-        const btn = document.createElement('button');
-        btn.className = 'aspect-square rounded-xl sm:rounded-2xl overflow-hidden bg-blush/30 hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300 cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-brown/50';
-        btn.setAttribute('aria-label', 'View larger');
-
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = 'Handmade crochet piece';
-        img.className = 'w-full h-full object-cover pointer-events-none';
-        img.loading = 'lazy';
-
-        btn.appendChild(img);
-        grid.appendChild(btn);
-        btn.addEventListener('click', () => openLightbox(src));
-      }
-    } catch {
-      loading.textContent = 'Could not load photos.';
-    }
-  }
-
-  loadGallery();
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((btn) => {
+    btn.addEventListener('click', () => openLightbox(btn.dataset.lightbox!));
+  });
 </script>
