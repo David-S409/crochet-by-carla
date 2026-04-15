@@ -1,7 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 
 const gallery = defineCollection({
-  type: 'data',
+  type: 'content',
   schema: z.object({
     title: z.string(),
     photo: z.string(),
